@@ -1,24 +1,26 @@
 import logo from './logo.svg';
 import './App.css';
-
+import Routes from './Routes';
+import {Router} from 'react-router-dom'
 function App() {
+
+
+  const signOut = () => {
+    // localStorage.clear();
+    // this.setState({ isAuthenticating: false, ready: true });
+    // if(isLocalhost) {
+      window.location.replace('/login')
+    // }else{
+      // window.location.replace(`${OKTA_PROVIDER}/oauth2/sign_out?rd=https://expediagroup.okta.com/login/signout`);
+    // }
+  };
+
+  const childProps = {
+    isAuthenticated: false,
+    // signOut: signOut()
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes childProps={childProps} />
   );
 }
 
