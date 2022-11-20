@@ -6,7 +6,7 @@ class Home extends Component {
   
   render() {
     return this.props.isAuthenticated ? (
-      <Redirect to="/dashboard" />
+      <Redirect to="/salesperson" />
     ) : (
       <Redirect to="/login" />
     );

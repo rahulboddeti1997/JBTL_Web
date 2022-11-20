@@ -1,0 +1,93 @@
+/* .button-css {
+    margin-left: -15px;
+    font-size: 16px;
+    font-weight: bold;
+} */
+
+/* .ant-divider-horizontal {
+    margin: 10px 0;
+} */
+
+.btns-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.10rem 0.8rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  color: #f3f3f3;
+  font-size: 1.5rem;
+  background-size: 200% auto;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-position: right;
+}
+
+.btn-restart {
+  background-image: linear-gradient(
+    to left,
+    #10def9 0%,
+     #314755 51%,
+    #26a0da 100%
+  );
+}
+
+.btn-quit {
+  background-image: linear-gradient(
+    to left,
+    #d31027 0%,
+    #5c0711 51%,
+    #ea384d 100%
+  );
+}
+
+.button-14 {
+  background-image: linear-gradient(
+    to right,
+    #870000 0%,
+    #190a05 51%,
+    #870000 100%
+  );
+  margin: 10px;
+  font-size: 14px;
+  padding: 4px 10px;
+  text-align: center;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  font-weight: bold;
+}
+
+.button-14:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.logout:hover {
+ background-color: #001529 !important;
+}
+
+.ant-picker-range {
+  width: 22%;
+  margin-right: 15px;
+  height: fit-content;
+  margin-top: 9 px;
+}
+
+.react-draggable{
+  transform: translate(600px, 0px) !important;
+}

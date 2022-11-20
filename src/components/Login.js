@@ -1,16 +1,27 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Row, Col, Card, Alert} from 'antd';
+import { Form, Input, Row, Col, Card, Alert} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Typography, Avatar } from 'antd';
 import BeatLoader from "react-spinners/BeatLoader";
+import {CustButton} from '../components/button'
 // import Auth from "../utils/Auth";
-
+import axios from 'axios';
 const { Title, Text } = Typography;
 const Login = (props) => {
 
 
-const onFinish = () => {
-    props.history.push("/dashboard")
+
+const onFinish = async (values) => {
+  const url = 'http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/auth/signin'
+  await axios.post(url, values).then((res)=>{
+    console.log(res.data)
+    localStorage.setItem('user',JSON.stringify(res.data));
+    localStorage.setItem('accessToken',JSON.stringify(res.data.accessToken));
+    props.history.push('/salesperson');
+  
+  }).catch((err)=>{
+  
+  })
 }
 
     return (
@@ -33,7 +44,7 @@ const onFinish = () => {
             {/* {this.state.signIn.isFailed ? <Alert style={{marginBottom:15}} message={this.state.signIn.message} type="error" showIcon /> : null} */}
             
             <Form.Item
-              name="username"
+              name="email"
               rules={[
                 {
                   required: true,
@@ -60,10 +71,8 @@ const onFinish = () => {
               />
             </Form.Item>
             
-            <Form.Item>
-              <Button type="primary" htmlType="submit" style={{float:'centre'}}>
-              {'Sign In'}
-              </Button>
+            <Form.Item style={{textAlign:'center'}}>
+              <CustButton text='Sign In' />
             </Form.Item>
           </Form>
           </Card>

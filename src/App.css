@@ -20,6 +20,11 @@
   background-color: #001529 !important;
 }
 
+.ant-table{
+  height: 38rem;
+  overflow: scroll;
+}
 /* .ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
   background-color: #001529;
 } */
+

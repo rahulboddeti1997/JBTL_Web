@@ -12,12 +12,10 @@ export default ({ childProps }) => (
     <Switch>
         <AppliedRoute path="/" exact component={Home}  props={childProps} />
         <AppliedRoute path="/login" exact isPrivate={false} component={Login} props={childProps} />
-        <AppliedRoute path="/dashboard" exact isPrivate={false} component={Dashboard} props={childProps} />
-        <AppliedRoute path="/history" exact isPrivate={false} component={History} props={childProps} />
         <AppliedRoute path="/salesperson" exact isPrivate={false} component={SalesPerson} props={childProps} />
+        <AppliedRoute path="/history/:tab(sales|expense|collection)/:id" exact isPrivate={false} component={History} props={childProps} />
+        <AppliedRoute path="/dashboard" exact isPrivate={false} component={Dashboard} props={childProps} />
         <AppliedRoute path="/products" exact isPrivate={false} component={Products} props={childProps} />
-
-
         {/* <Route component={NotFound}  /> */}
     </Switch>
     </BrowserRouter>
