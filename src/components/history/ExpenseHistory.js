@@ -29,16 +29,20 @@ const ExpenseHistory = (props) => {
   const draggleRef = useRef(null);
   const [modalUrl, setModalUrl] = useState(null);
 
-  const [startDate,setstartDate] = useState('');
+  const [startDate,setstartDate] = useState(moment().add(-1,'days').format('YYYY-MM-DD'));
   const [endDate,setendDate ]
-  = useState('');
+  = useState(moment().format('YYYY-MM-DD'));
   const [userData,setUserData] = useState(null);
 
   useEffect (() =>{
-    const data = localStorage.getItem('user')
-    setUserData(JSON.parse(data))
-    getExpenseDetails(JSON.parse(data));
+    getuserData()
 },[])
+
+const getuserData = () => {
+  const data = localStorage.getItem('user')
+  setUserData(JSON.parse(data))
+  getExpenseDetails(JSON.parse(data));
+}
 
 const getSignedUrl = (link) => {
   let key_arr = link.split('/')
@@ -53,21 +57,12 @@ const getSignedUrl = (link) => {
 }
 
 
-const getExpenseDetails = async (res,startdate,enddate) => {
+const getExpenseDetails = async (res) => {
     // const userId = route.params.id ? route.params.id:res?.user.id;
     const userId = props.id
-  let startDate = ''
-  let endDate = ''
-  if(startdate===undefined && enddate===undefined){
-    startDate =new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()
-    endDate=new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+(new Date().getDate()+1)
-         }
-    else{
-      startDate = new Date(startdate).getFullYear()+'-'+(new Date(startdate).getMonth()+1)+'-'+new Date(startdate).getDate()
-      endDate = new Date(enddate).getFullYear()+'-'+(new Date(enddate).getMonth()+1)+'-'+(new Date(enddate).getDate()+1)
-    }
+
   try{ 
-    const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/${userId}/getexpenseentry/${startDate}/${endDate}`;
+    const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/${userId}/getexpenseentry/${startDate}/${moment(endDate).add(1,'days').format('YYYY-MM-DD')}`;
     axios.defaults.headers.common = {'Authorization': `Bearer ${res?.accessToken}`}
   await axios.get(url).then((res)=>{
     let data = res.data.body;
@@ -144,11 +139,11 @@ const onStart = (_event, uiData) => {
       };
 
     return (
-        <div style={{width:'95%'}}>
+        <div style={{width:'100%',padding:25,backgroundColor:'white',border:'2px solid #870000',borderRadius:10}}>
             <div style={{display:'flex',flexDirection:'row'}}>
     
-            <RangePicker  style={{width:'32%'}}/>
-            <CustButton text='Submit' />
+            <RangePicker  style={{marginRight:15,border: '1px solid #870000',borderRadius: 16}} defaultValue={[moment().add(-1,'days'),moment() ]} onChange={e => {setstartDate(e[0].format('YYYY-MM-DD'));setendDate(e[1].format('YYYY-MM-DD'))}}/>
+            <CustButton text='Submit' func={getuserData} />
                 <CsvDownloader
                     style={{marginLeft:'auto',}}
                     datas={expenseData}

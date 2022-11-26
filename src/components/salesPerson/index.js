@@ -35,18 +35,35 @@ const SalesPerson = (props) => {
 
   const getSalesPersonDetails = async (res, startdate, enddate) => {
     try {
+      const token = res.accessToken
       const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/allusers`;
       axios.defaults.headers.common = { 'Authorization': `Bearer ${res?.accessToken}` }
       await axios.get(url).then((res) => {
         let data = res.data;
-        console.log(data)
-        setSalesPersonData(data)
+        // console.log(data)
+        // let filtered = data.map(item => {
+        //    getReportDetails(token,item.id).then(re => {
+        //   item['report'] =  re.data.body
+        //   }).catch(err => {
+        //   item['report'] =  false
+        //     // console.log(err)
+        //   })
+        //   return item;
+        // })
+        // console.log(data.splice(1))
+        setSalesPersonData(data.splice(1))
       })
     }
     catch (err) {
       //console.log(err)
     }
   }
+
+//   const getReportDetails = async (token,id) => {
+//     const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/report/${id}/getReport`;
+//     axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
+//     return await axios.get(url);
+// }
 
 
   return (
@@ -57,15 +74,14 @@ const SalesPerson = (props) => {
           {salesPersonData.map(item => {
             return (
               <Col className="gutter-row" style={{marginRight: '-20px'}} span={5} offset={1}>
-            <Card style={{ borderRadius: 15, marginBottom: 20, borderWidth: 0.5, borderColor: '#001529' }}>
-              <Title level={4}>{item.displayName}</Title>
+            <Card title={item.displayName} className='card-' style={{ borderRadius: 15, marginBottom: 20, borderWidth: 0.5, borderColor: '#001529' }}>
               <Text><b>Outstanding </b> <Text> : TZS 25000</Text></Text><br />
               <Text><b>Cash </b> : TZS 25000</Text><br />
               <Text><b>Credit </b> : TZS 25000</Text>
               <Divider />
               <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Button type='link' className="button-css" onClick={() => { props.history.push("/history/sales/"+item.id); localStorage.setItem('openKey', 'history'); }}>History</Button>
-                <Button type='link' className="button-css" onClick={showModal}>Edit</Button>
+                {/* <Button type='link' className="button-css" onClick={showModal}>Edit</Button>
                 <Popconfirm
                   title="Are you sure to disable?"
                   okText="Yes"
@@ -79,7 +95,7 @@ const SalesPerson = (props) => {
                   cancelText="No"
                 >
                   <Button type='link' className="button-css" >Delete</Button>
-                </Popconfirm>
+                </Popconfirm> */}
               </div>
             </Card>
             </Col>)

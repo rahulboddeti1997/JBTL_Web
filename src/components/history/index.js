@@ -26,7 +26,7 @@ const History = (props) => {
         <AppLayout {...props}>
             <QueryClientProvider client={queryClient}>
          <Tabs onChange={callback} type="card" activeKey={activeTabKey}>
-            <TabPane tab="Sales" key="sales">
+            <TabPane tab="Sales" key="sales" style={{borderRadius: 10}}>
                 <SalesHistory id={userId}/>
             </TabPane>
             <TabPane tab="Expense" key="expense">

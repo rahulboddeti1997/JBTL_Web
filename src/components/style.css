@@ -69,6 +69,7 @@
   outline: none;
   border: none;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .button-14:hover {
@@ -85,9 +86,40 @@
   width: 22%;
   margin-right: 15px;
   height: fit-content;
-  margin-top: 9 px;
+  margin-top: 10px ;
 }
 
 .react-draggable{
   transform: translate(600px, 0px) !important;
+}
+
+.card-:hover {
+  background-image: linear-gradient(
+    to right,
+    #870000 0%,
+    #190a05 50%,
+    #870000 100%
+  );
+  transition: 0.4s;
+  background-size: 200% auto;
+  box-shadow: 0 0 20px #eee;
+  color:white !important;
+  border-color: white;
+}
+
+ .ant-typography, .ant-card-head {
+  color: unset;
+}
+
+.ant-card-head {
+  font-weight: 650;
+  font-size: 20px;
+}
+
+.ant-tabs-tab {
+  border-radius: 10px !important;
+  background-color: #001529 !important;
+  color: white !important;
+  font-weight: 800;
+  font-size:medium;
 }

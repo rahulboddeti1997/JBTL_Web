@@ -3,17 +3,17 @@
 
 
 
-.ant-drawer-body {
+/* .ant-drawer-body {
   padding: 0px;
-}
+} */
 
 .ant-menu-inline {
   height: -webkit-fill-available;
 }
-
+/* 
 .ant-drawer-content-wrapper {
   width: 250px !important;
-}
+} */
 
 .ant-layout-header {
   padding: 3px !important;

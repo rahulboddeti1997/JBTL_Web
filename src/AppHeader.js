@@ -14,9 +14,9 @@ import {
 import { Mobile, Default } from './Responsive';
 import '../src/components/style.css'
 import './App.css';
+import { useHistory } from "react-router-dom";
 const { Header } = Layout;
 const { Text } = Typography;
- 
 const getOpenKeys = () => {
   const keys = localStorage.getItem('openKey');
   if(keys){
@@ -26,6 +26,8 @@ const getOpenKeys = () => {
 }
 
 const AppHeader = (props) => {
+let history = useHistory();
+
   const [visible,setVisible] = useState(false);
   const [openKey, setOpenKey] = useState(getOpenKeys());
 
@@ -33,10 +35,10 @@ const AppHeader = (props) => {
     if(item.key !== 'logout'){
       localStorage.setItem('openKey',item.key)
       setOpenKey(item.key)
-      window.location.replace(item.key);
+      history.push('/'+item.key);
     }
     else{
-      window.location.replace('login')
+      history.push('/login')
     }
          
   }
@@ -84,7 +86,7 @@ const AppHeader = (props) => {
               </Menu.Item>
                 </Menu>
                 </Default>
-
+{/* 
             <Mobile>
             <Text style={{
               fontSize:25,
@@ -104,12 +106,6 @@ const AppHeader = (props) => {
               >
             <Menu mode="inline" style={{paddingTop:50,marginBottom:'auto'}} theme='dark' defaultSelectedKeys={['salesperson']}>
             
-              {/* <Menu.Item key="dashboard" icon={<HomeOutlined />}>
-                  Dashboard
-                </Menu.Item>
-                <Menu.Item key="history" icon={<InfoCircleOutlined />}>
-                  History
-                </Menu.Item> */}
                 <Menu.Item key="salesperson" icon={<UserOutlined />}>
                   Sales Persons
                 </Menu.Item>
@@ -122,7 +118,7 @@ const AppHeader = (props) => {
                 </Menu>
               </Drawer>
             </Mobile>
-           
+            */}
 
           </Header>
         )

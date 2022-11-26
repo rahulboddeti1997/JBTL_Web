@@ -5,6 +5,7 @@ import { Typography, Table, Space, Tag, DatePicker } from 'antd';
 import AppLayout from '../../AppLayout';
 import axios from 'axios';
 import moment from 'moment';
+import dayjs from 'dayjs';
 
 import '../style.css'
 import {CustButton} from '../button'
@@ -16,33 +17,28 @@ const { RangePicker } = DatePicker;
 const CollectionHistory = (props) => {
   const [salesData,setSalesData] = useState(null);
   const [customerData,setCustomerData] = useState(null);
-  const [startDate,setstartDate] = useState('');
+  const [startDate,setstartDate] = useState(moment().add(-1,'days').format('YYYY-MM-DD'));
   const [endDate,setendDate ]
-  = useState('');
+  = useState(moment().format('YYYY-MM-DD'));
   const [isLoading,setIsLoading] = useState(true);
 
   const [userData,setUserData] = useState(null);
 
   useEffect (() =>{
-    const data = localStorage.getItem('user')
-    setUserData(JSON.parse(data))
-      getCustomers(JSON.parse(data));
+    getUserData()
 },[])
 
+const getUserData = () => {
+  const data = localStorage.getItem('user')
+  setUserData(JSON.parse(data))
+    getCustomers(JSON.parse(data));
+}
 
   const getSalesDetails = async (res,obj) => {
     // setIsLoaded(false)
     const userId = props.id
-    // if(startDate==='' && endDate===''){
-     let startdate =new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()
-     let  enddate=new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+(new Date().getDate()+1)
-    //        }
-    //   else{
-    //     startDate = new Date(startDate).getFullYear()+'-'+(new Date(startDate).getMonth()+1)+'-'+new Date(startDate).getDate()
-    //     endDate = new Date(startDate).getFullYear()+'-'+(new Date(startDate).getMonth()+1)+'-'+(new Date(startDate).getDate()+1)
-    //   }
     try{ 
-      const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/${userId}/saleentry/${startdate}/${enddate}`;
+      const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/${userId}/saleentry/${startDate}/${moment(endDate).add(1,'days').format('YYYY-MM-DD')}`;
     axios.defaults.headers.common = {'Authorization': `Bearer ${res?.accessToken}`}
     await axios.get(url).then(async (response)=>{
       let data = response.data.body;
@@ -63,24 +59,13 @@ const CollectionHistory = (props) => {
     }
   }
 
-  const getProducts = async (trans_id,token) => {
-  let data = ''
-    try{ 
-      const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/productsaleentry/${trans_id}`;
-    axios.defaults.headers.common = {'Authorization': `Bearer ${token}`}
-    return await axios.get(url)
-  }
-    catch(err){
-      console.log(err)
-    }
-    return(data)
 
-  }
 
   const getCustomers = async (user) => {
     setUserData(user)
     // const userId = route.params?.id ? route.params.id:user?.user.id;
-    const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/3/customers`
+    const userId = props.id
+    const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/${userId}/customers`
     axios.defaults.headers.common = {'Authorization': `Bearer ${user?.accessToken}`}
     try{
       await axios.get(url).then((res)=>{
@@ -130,13 +115,12 @@ const CollectionHistory = (props) => {
           key: 'receiptNumber',
         },
       ];
-
     return (
-        <div style={{width:'95%'}}>
+        <div style={{width:'100%',padding:25,backgroundColor:'white',border:'2px solid #870000',borderRadius:10}}>
             <div style={{display:'flex',flexDirection:'row'}}>
     
-            <RangePicker  style={{width:'32%',marginRight:15}}/>
-            <CustButton  text='Submit' />
+            <RangePicker  style={{marginRight:15,border: '1px solid #870000',borderRadius: 16}} defaultValue={[moment().add(-1,'days'),moment() ]} onChange={e => {setstartDate(e[0].format('YYYY-MM-DD'));setendDate(e[1].format('YYYY-MM-DD'))}}/>
+            <CustButton  text='Submit' func={getUserData} />
                 <CsvDownloader
                     style={{marginLeft:'auto',}}
                     datas={salesData}
