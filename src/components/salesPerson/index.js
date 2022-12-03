@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col, Card, Modal, Divider, Popconfirm } from 'antd';
+import { Form, Button, Row, Col, Card, Modal, Divider, Popconfirm, Tooltip } from 'antd';
 import { Typography, Avatar } from 'antd';
-// import Auth from "../utils/Auth";
 import '../style.css'
 import axios from 'axios'
+import { useHistory } from "react-router-dom";
 import AppLayout from '../../AppLayout';
+import { ArrowRightOutlined } from '@ant-design/icons';
+
 const { Title, Text } = Typography;
 const style = {
   background: '#0092ff',
@@ -14,6 +16,7 @@ const SalesPerson = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [salesPersonData, setSalesPersonData] = useState([]);
   const [userData, setUserData] = useState(null);
+  let history = useHistory();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -29,8 +32,13 @@ const SalesPerson = (props) => {
 
   useEffect(() => {
     const data = localStorage.getItem('user')
-    setUserData(JSON.parse(data))
-    getSalesPersonDetails(JSON.parse(data));
+    if(data){
+      setUserData(JSON.parse(data))
+      getSalesPersonDetails(JSON.parse(data));
+    }else{
+      history.push('/login')
+    }
+
   }, [])
 
   const getSalesPersonDetails = async (res, startdate, enddate) => {
@@ -79,8 +87,8 @@ const SalesPerson = (props) => {
               <Text><b>Cash </b> : TZS 25000</Text><br />
               <Text><b>Credit </b> : TZS 25000</Text>
               <Divider />
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Button type='link' className="button-css" onClick={() => { props.history.push("/history/sales/"+item.id); localStorage.setItem('openKey', 'history'); }}>History</Button>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}>
+              <Tooltip title='History'> <ArrowRightOutlined style={{fontSize:18}} onClick={() => { props.history.push("/history/sales/"+item.id); localStorage.setItem('openKey', 'history'); }}/></Tooltip>
                 {/* <Button type='link' className="button-css" onClick={showModal}>Edit</Button>
                 <Popconfirm
                   title="Are you sure to disable?"

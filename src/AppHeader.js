@@ -1,17 +1,13 @@
-import React, { Component, useState } from 'react'
+import React, {  useState } from 'react'
 
-import { Layout, Button, Typography, Drawer, Menu } from 'antd';
+import { Layout, Button, Typography, Menu } from 'antd';
 import {
-  HomeOutlined,
-  MailOutlined,
   UserOutlined,
   LogoutOutlined,
-  InfoCircleOutlined,
-  BarsOutlined,
   ShopOutlined
 } from '@ant-design/icons';
 // import Auth from "../utils/Auth";
-import { Mobile, Default } from './Responsive';
+import {  Default } from './Responsive';
 import '../src/components/style.css'
 import './App.css';
 import { useHistory } from "react-router-dom";
@@ -28,7 +24,7 @@ const getOpenKeys = () => {
 const AppHeader = (props) => {
 let history = useHistory();
 
-  const [visible,setVisible] = useState(false);
+  // const [visible,setVisible] = useState(false);
   const [openKey, setOpenKey] = useState(getOpenKeys());
 
    const handleClick = (item) => {
@@ -78,9 +74,9 @@ let history = useHistory();
                 <Menu.Item key="salesperson" icon={<UserOutlined />}>
                   Sales Persons
                 </Menu.Item>
-                {/* <Menu.Item key="products" icon={<ShopOutlined />}>
+                <Menu.Item key="products" icon={<ShopOutlined />}>
                   Products
-                </Menu.Item> */}
+                </Menu.Item>
               <Menu.Item key="logout" className='logout' style={{marginLeft: 'auto'}}>
                 <Text strong style={{marginRight:15}}> </Text><Button type="link" icon={<LogoutOutlined/>}>Logout</Button>
               </Menu.Item>

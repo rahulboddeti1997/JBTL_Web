@@ -18,7 +18,7 @@ const AppLayout = (props) => {
                     :
                     null
                 }
-                <Content className={props.classname || ''} style={{margin: '16px 16px',marginLeft:50,marginTop:40, padding: 0, minHeight: '100vh'}}>
+                <Content className={props.classname || ''} style={{ padding: '40px 50px 16px 50px', minHeight: '100vh', backgroundColor:'currentcolor'}}>
                     {props.children}
                 </Content>
             </Layout>

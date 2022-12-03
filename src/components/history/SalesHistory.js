@@ -6,6 +6,7 @@ import AppLayout from '../../AppLayout';
 import axios from 'axios';
 import moment from 'moment';
 import '../style.css'
+import { useHistory } from "react-router-dom";
 import {CustButton} from '../button'
 import {EyeFilled} from '@ant-design/icons';
 import Draggable from 'react-draggable';
@@ -33,6 +34,7 @@ const SalesHistory = (props) => {
     bottom: 0,
     right: 0,
   });
+  let history = useHistory();
   const draggleRef = useRef(null);
   useEffect (() =>{
     getUserData();
@@ -40,8 +42,13 @@ const SalesHistory = (props) => {
 
 const getUserData = () => {
   const data = localStorage.getItem('user');
-  setUserData(JSON.parse(data));
-  getCustomers(JSON.parse(data));
+  if(data){
+    setUserData(JSON.parse(data));
+    getCustomers(JSON.parse(data));
+  }else{
+    history.push('/login')
+  }
+
 }
 
   const getSalesDetails = async (res,obj) => {
@@ -206,7 +213,7 @@ const getUserData = () => {
     
             <RangePicker  style={{marginRight:15,border: '1px solid #870000',borderRadius: 16}} defaultValue={[moment().add(-1,'days'),moment() ]} onChange={e => {setstartDate(e[0].format('YYYY-MM-DD'));setendDate(e[1].format('YYYY-MM-DD'))}}/>
 
-            <CustButton  text='Submit'  size />
+            <CustButton  text='Submit'  func={getUserData} />
                 <CsvDownloader
                     style={{marginLeft:'auto',}}
                     datas={salesData}

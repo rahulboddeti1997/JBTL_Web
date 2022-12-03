@@ -6,7 +6,7 @@ import AppLayout from '../../AppLayout';
 import axios from 'axios';
 import moment from 'moment';
 import dayjs from 'dayjs';
-
+import { useHistory } from "react-router-dom";
 import '../style.css'
 import {CustButton} from '../button'
 
@@ -21,6 +21,7 @@ const CollectionHistory = (props) => {
   const [endDate,setendDate ]
   = useState(moment().format('YYYY-MM-DD'));
   const [isLoading,setIsLoading] = useState(true);
+  let history = useHistory();
 
   const [userData,setUserData] = useState(null);
 
@@ -30,12 +31,16 @@ const CollectionHistory = (props) => {
 
 const getUserData = () => {
   const data = localStorage.getItem('user')
-  setUserData(JSON.parse(data))
+  if(data){
+    setUserData(JSON.parse(data))
     getCustomers(JSON.parse(data));
+  }else{
+    history.push('/login')
+  }
+  
 }
 
   const getSalesDetails = async (res,obj) => {
-    // setIsLoaded(false)
     const userId = props.id
     try{ 
       const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/${userId}/saleentry/${startDate}/${moment(endDate).add(1,'days').format('YYYY-MM-DD')}`;

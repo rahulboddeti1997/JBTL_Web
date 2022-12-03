@@ -94,13 +94,13 @@
 }
 
 .card-:hover {
+  transition: 0.4s;
   background-image: linear-gradient(
     to right,
     #870000 0%,
     #190a05 50%,
     #870000 100%
   );
-  transition: 0.4s;
   background-size: 200% auto;
   box-shadow: 0 0 20px #eee;
   color:white !important;
@@ -116,10 +116,22 @@
   font-size: 20px;
 }
 
+.prod .ant-card-head-title {
+  font-size: 16px !important;
+}
+
 .ant-tabs-tab {
   border-radius: 10px !important;
   background-color: #001529 !important;
   color: white !important;
   font-weight: 800;
   font-size:medium;
+}
+
+.ant-menu-dark.ant-menu-horizontal > .ant-menu-item {
+  margin-top: -5px;
+  padding-top: 5px ;
+}
+.ant-menu-item {
+  margin-right: 4px;
 }

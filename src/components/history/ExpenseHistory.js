@@ -6,12 +6,12 @@ import axios from 'axios'
 import { Typography, Table, Modal, Tag, DatePicker, Button } from 'antd';
 import {CustButton} from '../button'
 // import Auth from "../utils/Auth";
+import { useHistory } from "react-router-dom";
 import AppLayout from '../../AppLayout';
 import {EyeFilled} from '@ant-design/icons';
 import Draggable from 'react-draggable';
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
-
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3({accessKeyId:'AKIAXLNS2IHWSSLPUFW7', secretAccessKey:'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', region:'us-east-1'});
 
@@ -26,6 +26,7 @@ const ExpenseHistory = (props) => {
     bottom: 0,
     right: 0,
   });
+  let history = useHistory();
   const draggleRef = useRef(null);
   const [modalUrl, setModalUrl] = useState(null);
 
@@ -40,8 +41,13 @@ const ExpenseHistory = (props) => {
 
 const getuserData = () => {
   const data = localStorage.getItem('user')
-  setUserData(JSON.parse(data))
-  getExpenseDetails(JSON.parse(data));
+  if(data){
+    setUserData(JSON.parse(data))
+    getExpenseDetails(JSON.parse(data));
+  }else{
+    history.push('/login')
+  }
+
 }
 
 const getSignedUrl = (link) => {
@@ -60,7 +66,6 @@ const getSignedUrl = (link) => {
 const getExpenseDetails = async (res) => {
     // const userId = route.params.id ? route.params.id:res?.user.id;
     const userId = props.id
-
   try{ 
     const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/${userId}/getexpenseentry/${startDate}/${moment(endDate).add(1,'days').format('YYYY-MM-DD')}`;
     axios.defaults.headers.common = {'Authorization': `Bearer ${res?.accessToken}`}
