@@ -13,12 +13,12 @@ const { Option } = Select;
 
 const Products = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editProd,setEditProd] = useState(false);
-  const [addQuant,setAddQuant] = useState(false);
-  const [userData,setUserData] = useState()
+  const [editProd, setEditProd] = useState(false);
+  const [addQuant, setAddQuant] = useState(false);
+  const [userData, setUserData] = useState()
   const [productData, setProductData] = useState([]);
-  const [prodId,setProdId] = useState('')
-  const [title,setTitle] = useState('Add Product')
+  const [prodId, setProdId] = useState('')
+  const [title, setTitle] = useState('Add Product')
   const [form] = Form.useForm();
   let history = useHistory();
 
@@ -54,14 +54,15 @@ const Products = (props) => {
     console.log(e)
     if (form.isFieldsValidating()) {
       setOpen(false);
-    }else{
-      if(editProd){
+    } else {
+      if (editProd) {
         editProduct(e)
-      }else if (addQuant){
+      } else if (addQuant) {
         addQuantity(e)
-      }else{
+      } else {
         addProduct(e)
       }
+      getProductsDetails(userData)
     }
 
   };
@@ -73,10 +74,10 @@ const Products = (props) => {
         "hoPrice": item.price,
         "remarks": item.remarks,
         "quantity": item.quantity
-    }
-    const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/product`;
+      }
+      const url = `http://ec2-54-160-159-162.compute-1.amazonaws.com:8080/api/product`;
       axios.defaults.headers.common = { 'Authorization': `Bearer ${userData?.accessToken}` }
-      await axios.post(url,userDetails).then((res) => {
+      await axios.post(url, userDetails).then((res) => {
         console.log(res)
         notification.success({
           message: "Success",
@@ -102,10 +103,10 @@ const Products = (props) => {
         "productName": item.name,
         "hoPrice": item.price,
         "remarks": item.remarks,
-    }
-    const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/product/${prodId}`
+      }
+      const url = `http://ec2-54-160-159-162.compute-1.amazonaws.com:8080/api/product/${prodId}`
       axios.defaults.headers.common = { 'Authorization': `Bearer ${userData?.accessToken}` }
-      await axios.post(url,userDetails).then((res) => {
+      await axios.post(url, userDetails).then((res) => {
         console.log(res)
         notification.success({
           message: "Success",
@@ -130,11 +131,12 @@ const Products = (props) => {
       const userDetails = {
         "productName": item.name,
         "remarks": item.remarks,
-        "quantity": item.quantity
-    }
-    const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/product/${userData.user.id}/addproduct`;
+        "quantity": item.quantity,
+        'entrydDate': item.entrydDate
+      }
+      const url = `http://ec2-54-160-159-162.compute-1.amazonaws.com:8080/api/product/${userData.user.id}/addproduct`;
       axios.defaults.headers.common = { 'Authorization': `Bearer ${userData?.accessToken}` }
-      await axios.post(url,userDetails).then((res) => {
+      await axios.post(url, userDetails).then((res) => {
         console.log(res)
         notification.success({
           message: "Success",
@@ -156,7 +158,7 @@ const Products = (props) => {
 
   const getProductsDetails = async (res) => {
     try {
-      const url = `http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/products`;
+      const url = `http://ec2-54-160-159-162.compute-1.amazonaws.com:8080/api/products`;
       axios.defaults.headers.common = { 'Authorization': `Bearer ${res?.accessToken}` }
       await axios.get(url).then((res) => {
         let data = res.data.body;
@@ -170,10 +172,10 @@ const Products = (props) => {
 
   useEffect(() => {
     const data = localStorage.getItem('user')
-    if(data){
+    if (data) {
       setUserData(JSON.parse(data))
       getProductsDetails(JSON.parse(data))
-    }else{
+    } else {
       history.push('/login')
     }
   }, [])
@@ -184,7 +186,7 @@ const Products = (props) => {
     setEditProd(true)
     setProdId(item.id)
     form.setFieldsValue({
-      name: item.productName, 
+      name: item.productName,
       price: item.hoPrice,
       quantity: item.quantity,
     });
@@ -195,7 +197,7 @@ const Products = (props) => {
     setOpen(true)
     setAddQuant(true)
     form.setFieldsValue({
-      name: item.productName, 
+      name: item.productName,
       price: item.hoPrice,
       quantity: ''
     });
@@ -206,7 +208,7 @@ const Products = (props) => {
   return (
     <AppLayout {...props}>
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <CustButton text='Add Product' style={{ cursor: 'pointer', alignSelf: 'center' }} func={showDrawer} />
+        {userData?.user?.email !== 'sales@jbtlapp.com' && <CustButton text='Add Product' style={{ cursor: 'pointer', alignSelf: 'center' }} func={showDrawer} />}
       </div>
       <br />
 
@@ -214,18 +216,18 @@ const Products = (props) => {
 
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }} type="flex" justify='start' >
 
-        <Col className="gutter-row" style={{ display: 'flex', flexDirection: 'row', gap: 80, flexWrap: 'wrap' }}>
+        <Col className="gutter-row" span={{ xs: 32, sm: 24, md: 16, lg: 8 }} style={{ display: 'flex', flexDirection: 'row', gap: 80, flexWrap: 'wrap' }}>
 
           {productData.map(item => {
-            return (<Card title={item.productName} className='card- prod' style={{ borderRadius: 15, marginBottom: 20, borderWidth: 0.5, borderColor: '#001529', width: '20vw' }}>
-              <Text><b>Quantity </b> <Text> :  {item.quantity}</Text></Text><br />
+            return (<Card title={item.productName} className='card- prod' style={{ borderRadius: 15, marginBottom: 20, borderWidth: 0.5, borderColor: '#001529', width: '20vw', width: 300 }}>
+              <Text><b>Quantity </b> <Text> :  {Number(item.quantity).toFixed(2)}</Text></Text><br />
               <Text><b>Ho Price </b> <Text> : TZS {item.hoPrice}</Text></Text><br />
               <Text><b>Remarks </b> <Text> :  {item.remarks}</Text></Text><br />
 
               <Divider />
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end',gap:15 }}>
-             <Tooltip title='Add Quantity'> <PlusCircleOutlined style={{fontSize:18}}  onClick={() => handelQuantity(item)}/></Tooltip>
-              <Tooltip title='Edit'> <EditOutlined onClick={() => handelEdit(item)} style={{fontSize:18}}/></Tooltip>
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', gap: 15 }}>
+                {userData?.user?.email !== 'sales@jbtlapp.com' && <Tooltip title='Add Quantity'> <PlusCircleOutlined style={{ fontSize: 18 }} onClick={() => handelQuantity(item)} /></Tooltip>}
+                {userData?.user?.email !== 'sales@jbtlapp.com' && <Tooltip title='Edit'> <EditOutlined onClick={() => handelEdit(item)} style={{ fontSize: 18 }} /></Tooltip>}
                 {/* <Button type='link' className="button-css" onClick={showDrawer}>Edit</Button> */}
                 {/* <Popconfirm
                   title="Are you sure to delete?"
@@ -243,14 +245,13 @@ const Products = (props) => {
         title={title}
         width={400}
         onClose={onClose}
-
         open={open}
         bodyStyle={{
           paddingBottom: 80,
         }}
         extra={
           <Space>
-            <Tooltip title='Reset' ><UndoOutlined hidden={editProd||addQuant} style={{marginRight:15}} onClick={onReset}/></Tooltip>
+            <Tooltip title='Reset' ><UndoOutlined hidden={editProd || addQuant} style={{ marginRight: 15 }} onClick={onReset} /></Tooltip>
           </Space>
         }
       >
@@ -317,6 +318,22 @@ const Products = (props) => {
                 ]}
               >
                 <Input placeholder="Please enter remarks" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item
+                name="entrydDate"
+                label="Entry Date"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select entry date',
+                  },
+                ]}
+              >
+                <DatePicker />
               </Form.Item>
             </Col>
           </Row>
