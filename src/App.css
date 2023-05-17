@@ -20,11 +20,26 @@
   background-color: #001529 !important;
 }
 
-.ant-table{
+.maintab .ant-table{
   height: 38rem;
   overflow: scroll;
 }
 /* .ant-menu-dark.ant-menu-horizontal > .ant-menu-item:hover {
   background-color: #001529;
 } */
-
+.ant-space-item {
+  align-self: flex-start;
+}
+@media only screen and (max-width: 600px) {
+  .stock {
+    display: flex;
+    flex-direction: column;
+  }
+  .form-card {
+    width: 90vw !important;
+  }
+}
+ 
+.ant-input-group {
+  border: '1px solid #870000' !important
+}

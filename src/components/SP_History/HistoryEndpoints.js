@@ -9,7 +9,7 @@ const setHeader = async () => {
 export const useGetAllAccounts = async (startDate,endDate) => {
       await setHeader();
       return useQuery(['getSalesData'],
-        () => axios.get(`http://ec2-54-152-245-106.compute-1.amazonaws.com:8080/api/user/3/saleentry/${startDate}/${endDate}`),
+        () => axios.get(`http://ec2-54-160-159-162.compute-1.amazonaws.com:8080/api/user/3/saleentry/${startDate}/${moment(endDate).add(1,'days').format('YYYY-MM-DD')}`),
         {refetchOnWindowFocus: false}
     );
 };
